@@ -44,7 +44,29 @@ func part_one() -> String:
 
 
 func part_two() -> String:
-	return "Implement me!"
+	_parse_input()
+
+	var zero_count := 0
+	var current_position = 50
+	for rotation in _rotations:
+		zero_count += rotation.amount / 100
+
+		var remainder: int
+		match rotation.dir:
+			Rotation.Direction.LEFT:
+				remainder = -rotation.amount % 100
+			Rotation.Direction.RIGHT:
+				remainder = rotation.amount % 100
+
+		if current_position != 0 && remainder != 0:
+			if current_position + remainder > 99:
+				zero_count += 1
+			if current_position + remainder <= 0:
+				zero_count += 1
+
+		current_position = wrap(current_position + remainder, MIN_POSITION, MAX_POSITION + 1)
+
+	return str(zero_count)
 
 
 func _on_button_part_1_pressed():
@@ -56,7 +78,7 @@ func _on_button_part_1_pressed():
 func _on_button_part_2_pressed():
 	button_part_2.disabled = true
 	label_part_2.text = "Calculating…"
-	label_part_2.text = part_one()
+	label_part_2.text = part_two()
 
 
 func _parse_input() -> void:
