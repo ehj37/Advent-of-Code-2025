@@ -23,7 +23,6 @@ func _parse_input() -> void:
 	var file = FileAccess.open("res://day3/input.txt", FileAccess.READ)
 	while !file.eof_reached():
 		var line = file.get_line()
-		print(line)
 		if line.is_empty():
 			continue
 
@@ -54,7 +53,24 @@ func part_one() -> String:
 
 
 func part_two() -> String:
-	return "Implement me!"
+	_parse_input()
+
+	var joltage_sum: int = 0
+	for bank in _banks:
+		var remaining_bank_options = bank.batteries.duplicate()
+		var chosen_joltages: Array[int] = []
+		for i in range(12):
+			var options = remaining_bank_options.slice(0, remaining_bank_options.size() - (11 - i))
+			var chosen_joltage = options.max()
+			chosen_joltages.append(chosen_joltage)
+
+			var chosen_joltage_i = remaining_bank_options.find(chosen_joltage)
+			remaining_bank_options = remaining_bank_options.slice(chosen_joltage_i + 1)
+
+		var chosen_joltage_str = chosen_joltages.reduce(func(acc, i): return acc + str(i), "")
+		joltage_sum += int(chosen_joltage_str)
+
+	return str(joltage_sum)
 
 
 func _on_button_part_1_pressed():
