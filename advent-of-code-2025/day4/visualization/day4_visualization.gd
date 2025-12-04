@@ -70,17 +70,13 @@ const PAPER_COLOR := Color("779FA1")
 const EMPTY_COLOR := Color("#88498F")
 const HIGHLIGHT_COLOR := Color("FF6542")
 
-const CELL_VALUE_TO_COLOR := {
-	Cell.Value.PAPER: PAPER_COLOR,
-	Cell.Value.EMPTY: EMPTY_COLOR
-}
+const CELL_VALUE_TO_COLOR := {Cell.Value.PAPER: PAPER_COLOR, Cell.Value.EMPTY: EMPTY_COLOR}
 
 var _grid: Grid
 var _visualization_rows: Array
 var _attempt_to_remove := false
 var _paper_removed_in_current_iteration := false
 var _current_cell: Cell
-
 
 @onready var rows_container: VBoxContainer = $RowsContainer
 @onready var button: Button = $Button
@@ -110,7 +106,7 @@ func _parse_input() -> void:
 
 		_grid.rows.append(row)
 		line_num += 1
-		
+
 	var visualization_row_containers = rows_container.get_children()
 	for visualization_row_container in visualization_row_containers:
 		_visualization_rows.append(visualization_row_container.get_children())
@@ -119,13 +115,13 @@ func _parse_input() -> void:
 func _process(_delta):
 	if !_attempt_to_remove:
 		return
-		
+
 	_single_step()
 
 
 func _ready():
 	_parse_input()
-	
+
 	for row: Array[Cell] in _grid.rows:
 		var row_container = HBoxContainer.new()
 		row_container.custom_minimum_size.y = 3
@@ -140,7 +136,7 @@ func _ready():
 			var cell_color_rect = ColorRect.new()
 			cell_color_rect.color = cell_color
 			cell_color_rect.custom_minimum_size.x = 4
-			
+
 			row_container.add_child(cell_color_rect)
 		rows_container.add_child(row_container)
 
@@ -163,20 +159,28 @@ func _single_step() -> void:
 			_paper_removed_in_current_iteration = true
 
 	var updated_visualization_color = CELL_VALUE_TO_COLOR[_current_cell.value]
-	get_tree().create_timer(0.05).timeout.connect(func(): visualization_cell.color = updated_visualization_color)
+	get_tree().create_timer(0.05).timeout.connect(
+		func(): visualization_cell.color = updated_visualization_color
+	)
 
-	if _current_cell.x < _grid.row_length() - 1:
-		_current_cell = _grid.rows[_current_cell.y][_current_cell.x + 1]
-		return
+	var next_cell: Cell = _current_cell
+	while next_cell == _current_cell || next_cell.value != Cell.Value.PAPER:
+		if next_cell.x < _grid.row_length() - 1:
+			next_cell = _grid.rows[next_cell.y][next_cell.x + 1]
+			continue
+
+		if next_cell.y < _grid.num_rows() - 1:
+			next_cell = _grid.rows[next_cell.y + 1][0]
+			continue
+
+		if !_paper_removed_in_current_iteration:
+			_attempt_to_remove = false
+			return
 		
-	if _current_cell.y < _grid.num_rows() - 1:
-		_current_cell = _grid.rows[_current_cell.y + 1][0]
-		return
-		
-	if !_paper_removed_in_current_iteration:
-		_attempt_to_remove = false
-	else:
-		_current_cell = _grid.cells[0][0]
+		next_cell = _grid.rows[0][0]
+		_paper_removed_in_current_iteration = false
+
+	_current_cell = next_cell
 
 
 func _get_visualization_cell(cell: Cell) -> ColorRect:
