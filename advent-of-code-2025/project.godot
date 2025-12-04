@@ -14,3 +14,8 @@ config/name="Advent of Code 2025"
 run/main_scene="uid://d2xld25y2e51x"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
