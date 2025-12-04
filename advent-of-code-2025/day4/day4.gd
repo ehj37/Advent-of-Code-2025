@@ -126,7 +126,28 @@ func part_one() -> String:
 func part_two() -> String:
 	_parse_input()
 
-	return "Implement me!"
+	var num_removed_paper = 0
+	var attempt_to_remove = true
+	while attempt_to_remove:
+		var paper_removed = false
+
+		for row: Array[Cell] in _grid.rows:
+			for cell in row:
+				if cell.value != Cell.Value.PAPER:
+					continue
+
+				var paper_count = 0
+				for dir in Cell.Direction.values():
+					if cell.get_value_in_dir(dir) == Cell.Value.PAPER:
+						paper_count += 1
+				if paper_count < 4:
+					cell.value = Cell.Value.EMPTY
+					num_removed_paper += 1
+					paper_removed = true
+
+		attempt_to_remove = paper_removed
+
+	return str(num_removed_paper)
 
 
 func _on_button_part_1_pressed():
