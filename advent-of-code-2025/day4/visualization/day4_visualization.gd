@@ -176,7 +176,7 @@ func _single_step() -> void:
 		if !_paper_removed_in_current_iteration:
 			_attempt_to_remove = false
 			return
-		
+
 		next_cell = _grid.rows[0][0]
 		_paper_removed_in_current_iteration = false
 
