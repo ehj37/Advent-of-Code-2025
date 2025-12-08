@@ -96,7 +96,37 @@ func part_one() -> String:
 func part_two() -> String:
 	_parse_input()
 
-	return str("Implement me!")
+	var junction_box_pairs_and_distances = []
+	for jb_i in range(_junction_boxes.size()):
+		var jb = _junction_boxes[jb_i]
+		for other_jb_i in range(jb_i + 1, _junction_boxes.size()):
+			var other_jb = _junction_boxes[other_jb_i]
+			if jb == other_jb:
+				continue
+
+			var distance = jb.position.distance_to(other_jb.position)
+			junction_box_pairs_and_distances.append([jb, other_jb, distance])
+
+	junction_box_pairs_and_distances.sort_custom(func(a, b): return a[2] < b[2])
+
+	var most_recent_con_x_coor_product = INF
+
+	var i = 0
+	while _circuits.size() > 1:
+		var pair_to_connect = junction_box_pairs_and_distances[i]
+
+		i += 1
+		var jb_1 = pair_to_connect[0] as JunctionBox
+		var jb_2 = pair_to_connect[1] as JunctionBox
+		if jb_1.circuit == jb_2.circuit:
+			continue
+
+		_circuits.erase(jb_2.circuit)
+		jb_1.circuit.con(jb_2.circuit)
+
+		most_recent_con_x_coor_product = jb_1.position.x * jb_2.position.x
+
+	return str(most_recent_con_x_coor_product)
 
 
 func _on_button_part_1_pressed():
