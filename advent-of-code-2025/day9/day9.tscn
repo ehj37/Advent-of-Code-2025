@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://f1qenxf22ky5"]
+
+[ext_resource type="Script" uid="uid://cb6jktvqgwuv1" path="res://day9/day9.gd" id="1_ou3qd"]
+
+[node name="Day9" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ou3qd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainerPart1" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonPart1" type="Button" parent="VBoxContainer/VBoxContainerPart1"]
+layout_mode = 2
+text = "Calculate Part 1"
+
+[node name="LabelPart1" type="Label" parent="VBoxContainer/VBoxContainerPart1"]
+layout_mode = 2
+
+[node name="VBoxContainerPart2" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonPart2" type="Button" parent="VBoxContainer/VBoxContainerPart2"]
+layout_mode = 2
+text = "Calculate Part 2"
+
+[node name="LabelPart2" type="Label" parent="VBoxContainer/VBoxContainerPart2"]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/VBoxContainerPart1/ButtonPart1" to="." method="_on_button_part_1_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainerPart2/ButtonPart2" to="." method="_on_button_part_2_pressed"]

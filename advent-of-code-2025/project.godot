@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Advent of Code 2025"
-run/main_scene="uid://6bm6d0wksk05"
+run/main_scene="uid://f1qenxf22ky5"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
